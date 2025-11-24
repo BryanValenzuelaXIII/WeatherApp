@@ -1,5 +1,7 @@
-import {React, useEffect, useState} from "react"
+import  React, { useEffect, useState} from "react"
 import { View, Text, Alert, Image, TouchableOpacity } from "react-native"
+
+import FutureForecast from "./FutureForecast";
 
 import LinearGradient from "react-native-linear-gradient";
 import {WeatherService} from "../services/WeatherService"
@@ -17,7 +19,7 @@ function WeatherPage(){
 
     const loadWeather = async () =>{
         let weather = await WeatherService(city);
-        console.log(weather.success);
+        console.log(weather.data.weather[0].icon);
          weather.success ? setWeather(weather) : console.log('An error occured!');
         };
     
@@ -26,6 +28,11 @@ function WeatherPage(){
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
+    const weatherIcons = {
+        '01d' : require('../../assets/01d.png'),
+        '04n': require('../../assets/04n.png'),
+    }
+
     const todayDate = new Date();
     
 
@@ -37,27 +44,33 @@ function WeatherPage(){
                         style = {{flex: 1}}
                     >
 
+
             <View style= {{flex: 8, backgroundColor: 'white', opacity: 0.8, borderBottomLeftRadius: 25, borderBottomRightRadius: 25}} >
-                <View style= {{flex: 1, opacity: 0.8, alignItems: 'center', paddingTop: 20}} >
+                <View style= {{flex: 1, opacity: 0.8, alignItems: 'center', paddingTop: 20 }} >
                     {/* This is for the location, and date */}
-                    <View style = {{ flexDirection: 'row'}}>
-                        <Image source={require('../../assets/location1.png')} />
-                    
-                        <Text style = {{fontSize: 25, fontWeight: 700}}>
-                        {city || "Location"}
-                        </Text>
+                    <View style = {{ flexDirection: 'row', alignContent: 'space-between', flex: 1}}>
+                       { <View style = {{ flex: 1}} >
+                            {/* <Text>
+                                a
+                            </Text> */}
+                        </View>  }
+                        <View style = {{ flexDirection: 'row', alignItems: 'flex-end', flex: 1}} >
+                             <Image source={require('../../assets/location1.png')} />                    
+                            <Text style = {{fontSize: 25, fontWeight: 700}}>
+                                {city || "Location"}
+                             </Text>
+                        </View>
                         
+                        <View style = {{flexDirection: 'row-reverse',alignItems:'flex-end', flex: 1, paddingRight: 20}}>
+                            { <TouchableOpacity >
+                                <Image source={require('../../assets/icons8-search-30.png')}/>
+                            </TouchableOpacity>}
+                        </View>
+                            
                     </View>
 
-                    <View style = {{backgroundColor: 'red'}}>
-                            <TouchableOpacity>
-                                <Text>
-                                    boton de lupa
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
 
-                    <Text style = {{fontSize: 15, fontWeight: 500, opacity: 0.7, marginTop: 5}}>
+                    <Text style = {{fontSize: 15, fontWeight: 500, opacity: 0.7, marginBottom: 20, paddingTop: 10 }}>
                         {weekDay[todayDate.getDay()]} {months[todayDate.getMonth()]} {todayDate.getFullYear()}
                     </Text>
 
@@ -71,9 +84,17 @@ function WeatherPage(){
                         <Text style = {{color: 'midnightblue', fontSize: 100, fontWeight: '900' }}>
                             {KelvinToFahrenheit(weather.data.main.temp)}°
                         </Text> 
-                        <Text style = {{color: 'midnightblue', fontSize: 20, fontWeight: '900'}}>
-                            {weather.data.weather[0].main}
-                        </Text>
+                        
+                        <View style ={{flexDirection: 'row'}} > 
+
+                                <Text style = {{color: 'midnightblue', fontSize: 20, fontWeight: '900'}}>
+                                  {weather.data.weather[0].main}
+                                 </Text>
+
+                                <Image style = {{position: 'absolute', transform: [{translateX: 45}, {translateY: -85}]}}
+                                     source={ weatherIcons[weather.data.weather[0].icon]}/>
+
+                        </View>
                     </View> ) : (
                         <Text style = {{color: 'midnightblue', fontSize: 20, fontWeight: '900'}}>
                             Tempeture = - -
@@ -83,18 +104,41 @@ function WeatherPage(){
 
                 <View style= {{flex: 1, opacity: 0.9, alignItems: 'center', justifyContent: 'center'}} >
                     {/* This is for extra info */}
-                    <View style = { {flexDirection: 'row', flex: 1, backgroundColor: 'white', justifyContent: 'space-around',
-                        borderRadius: 50, width: '90%'
+                    <View style = { {flex: 1, backgroundColor: 'white', justifyContent: 'space-around',
+                        borderRadius: 50, marginHorizontal:20, marginBottom: 10
                     } }> 
                     { weather?.data?.main?.temp ? (
-                        <><Text style={{ textAlign: 'center', fontSize: 20, flex: 1 }}>
-                                Humidity {"\n" + weather.data.main.humidity}
-                            </Text><Text style={{ textAlign: 'center', fontSize: 20, flex: 1 }}>
-                                    Wind {"\n" + weather.data.wind.speed}
-                                </Text><Text style={{ textAlign: 'center', fontSize: 20, flex: 1 }}>
-                                    Possibility of {"\n"}
-                                    rain
-                                </Text></>) :(
+                            <View style = {{flex: 1, flexDirection: 'row', width: '90%', padding: 10} }>
+                                <View style = {{backgroundColor: 'yellow'}}>
+                                    <Image source={require('../../assets/icons8-humidity-30.png')} 
+
+                                    ></Image>  
+                                    <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
+                                        Humidity {"\n" + weather.data.main.humidity}
+                                </Text>
+                                </View>
+
+                                <View >
+                                <Image source={require('../../assets/icons8-wind-30.png')} 
+
+                                    ></Image>  
+                                <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
+                                    Wind {"\n" + weather.data.wind.speed} Km/hr
+                                </Text>
+                                </View >
+
+                                <View>
+                                    <View >
+                                <Image source={require('../../assets/icons8-visibility-30.png')} 
+
+                                    ></Image>  
+
+                                    <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
+                                        Visibility {"\n" + (weather.data.visibility/100) + "%"}
+                                    </Text>
+                                    </View>
+                                </View>
+                            </View>) :(
                         <Text>
                             No information 
                         </Text>
@@ -110,7 +154,9 @@ function WeatherPage(){
             </View>
 
             <View style= {{flex: 3}} >
-
+                    <FutureForecast 
+                        city={city}
+                    /> 
             </View>
 
         </LinearGradient>
