@@ -1,5 +1,5 @@
 import {React, useEffect, useState} from "react"
-import { View, Text, Alert, Image } from "react-native"
+import { View, Text, Alert, Image, TouchableOpacity } from "react-native"
 
 import LinearGradient from "react-native-linear-gradient";
 import {WeatherService} from "../services/WeatherService"
@@ -46,7 +46,16 @@ function WeatherPage(){
                         <Text style = {{fontSize: 25, fontWeight: 700}}>
                         {city || "Location"}
                         </Text>
+                        
                     </View>
+
+                    <View style = {{backgroundColor: 'red'}}>
+                            <TouchableOpacity>
+                                <Text>
+                                    boton de lupa
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
                     <Text style = {{fontSize: 15, fontWeight: 500, opacity: 0.7, marginTop: 5}}>
                         {weekDay[todayDate.getDay()]} {months[todayDate.getMonth()]} {todayDate.getFullYear()}
@@ -76,17 +85,21 @@ function WeatherPage(){
                     {/* This is for extra info */}
                     <View style = { {flexDirection: 'row', flex: 1, backgroundColor: 'white', justifyContent: 'space-around',
                         borderRadius: 50, width: '90%'
-                    } }>
-                        <Text style = {{textAlign: 'center' , fontSize: 20, flex: 1}} >
-                            Humidity {"\n" + weather.data.main.humidity}
+                    } }> 
+                    { weather?.data?.main?.temp ? (
+                        <><Text style={{ textAlign: 'center', fontSize: 20, flex: 1 }}>
+                                Humidity {"\n" + weather.data.main.humidity}
+                            </Text><Text style={{ textAlign: 'center', fontSize: 20, flex: 1 }}>
+                                    Wind {"\n" + weather.data.wind.speed}
+                                </Text><Text style={{ textAlign: 'center', fontSize: 20, flex: 1 }}>
+                                    Possibility of {"\n"}
+                                    rain
+                                </Text></>) :(
+                        <Text>
+                            No information 
                         </Text>
-                        <Text style = {{textAlign: 'center' , fontSize: 20, flex: 1}}>
-                            Wind {"\n" + weather.data.wind.speed}
-                        </Text>
-                        <Text style = {{textAlign: 'center' , fontSize: 20, flex: 1}}>
-                            Possibility of {"\n"}
-                            rain
-                        </Text>
+                        )
+                    }
                     </View>
                 </View>
 
