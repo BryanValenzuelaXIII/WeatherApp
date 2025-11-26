@@ -5,7 +5,7 @@ import FutureForecast from "../components/FutureForecast";
 
 import LinearGradient from "react-native-linear-gradient";
 import {WeatherService} from "../services/WeatherService"
-import {KelvinToFahrenheit} from "../services/ConversionTempeture"
+import {KelvinToFahrenheit} from "../utils/ConversionTempeture"
 
 
 function WeatherPage(){
@@ -41,7 +41,7 @@ function WeatherPage(){
 
     return(
         <LinearGradient
-                        colors={['rgba(143,128,209,1)', 'rgba(214,209,230,1)']}
+                        colors={['rgba(140, 125, 207, 1)', 'rgba(214,209,230,1)']}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 0.1, y: 1 }}   // matches ~175deg angle
                         style = {{flex: 1}}

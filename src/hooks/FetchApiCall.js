@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 function useFetch ({url}){
@@ -18,6 +18,11 @@ function useFetch ({url}){
             setError(true)
         }
     }
-
+    useEffect(() => {
+        fetchInfo();
+    }, [url])
+    
     return {data, error};
 }
+
+export default useFetch;

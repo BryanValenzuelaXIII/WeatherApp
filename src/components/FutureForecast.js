@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {FutureWeatherService} from '../services/WeatherService';
+import SingleDaysWeather from '../utils/SingleDaysWeather'
+
 
 function FutureForecast({city /*This is in curly brackets since props takes an object*/ }){ 
 
@@ -18,6 +20,8 @@ function FutureForecast({city /*This is in curly brackets since props takes an o
          response.success ? setWeather(response) : console.log('An error occured!');
         };
 
+    
+      //  const days = SingleDaysWeather();
     return(
         <View style = {{flex: 1}}>
             { city ? (
@@ -31,7 +35,7 @@ function FutureForecast({city /*This is in curly brackets since props takes an o
                         data={testSquares} //data necessary for the flatlist
                         renderItem={({ item }) => ( //data from item
                         <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc',
-                         height: '90%', backgroundColor: 'red', paddingHorizontal: 35, margin: 5, borderRadius: 15}}>
+                         height: '90%', backgroundColor: 'azure', paddingHorizontal: 35, margin: 5, borderRadius: 15}}>
                             <Text>{item.title}</Text>
                          </View>
                         )}
