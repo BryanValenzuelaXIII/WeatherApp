@@ -1,7 +1,7 @@
 import  React, { useEffect, useState} from "react"
 import { View, Text, Alert, Image, TouchableOpacity } from "react-native"
 
-import FutureForecast from "./FutureForecast";
+import FutureForecast from "../components/FutureForecast";
 
 import LinearGradient from "react-native-linear-gradient";
 import {WeatherService} from "../services/WeatherService"
@@ -29,7 +29,8 @@ function WeatherPage(){
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     const weatherIcons = {
-        '01d' :require('../../assets/01d.png'),
+        '01d': require('../../assets/01d.png'),
+        '02d': require('../../assets/02d.png'),
         '04n': require('../../assets/04n.png'),
         '04d': require('../../assets/04n.png'),
         '10d': require('../../assets/10d.png'),
@@ -106,39 +107,39 @@ function WeatherPage(){
 
                 <View style= {{flex: 1, opacity: 0.9, alignItems: 'center', justifyContent: 'center'}} >
                     {/* This is for extra info */}
-                    <View style = { {flex: 1, backgroundColor: 'darkgray', justifyContent: 'space-around',
-                        borderRadius: 50, marginHorizontal:20, marginBottom: 10
+                    <View style = { {flex: 1, backgroundColor: 'lightcyan', justifyContent: 'space-around',
+                        borderRadius: 50, marginBottom: 10, width: '90%'
                     } }> 
                     { weather?.data?.main?.temp ? (
-                            <View style = {{flex: 1, flexDirection: 'row', width: '90%', padding: 10} }>
-                                <View style = {{}}>
+                            <View style = {{flex: 1, flexDirection: 'row',  justifyContent: 'space-around', marginTop: 10} }>
+                                <View style = {{alignItems: 'center'}}>
                                     <Image source={require('../../assets/icons8-humidity-30.png')} 
 
                                     ></Image>  
                                     <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
                                         Humidity {"\n" + weather.data.main.humidity}
-                                </Text>
+                                    </Text>
                                 </View>
 
-                                <View >
-                                <Image source={require('../../assets/icons8-wind-30.png')} 
+                                <View style = {{alignItems: 'center'}}>
+                                    <Image source={require('../../assets/icons8-wind-30.png')} 
 
                                     ></Image>  
-                                <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
-                                    Wind {"\n" + weather.data.wind.speed} Km/hr
-                                </Text>
+                                    <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
+                                        Wind {"\n" + weather.data.wind.speed} Km/hr
+                                    </Text>
                                 </View >
 
-                                <View>
-                                    <View >
-                                <Image source={require('../../assets/icons8-visibility-30.png')} 
+
+                                <View style = {{alignItems: 'center'}}>
+                                    <Image source={require('../../assets/icons8-visibility-30.png')} 
 
                                     ></Image>  
 
                                     <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
                                         Visibility {"\n" + (weather.data.visibility/100) + "%"}
                                     </Text>
-                                    </View>
+
                                 </View>
                             </View>) :(
                         <Text>
