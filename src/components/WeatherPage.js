@@ -29,8 +29,10 @@ function WeatherPage(){
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     const weatherIcons = {
-        '01d' : require('../../assets/01d.png'),
+        '01d' :require('../../assets/01d.png'),
         '04n': require('../../assets/04n.png'),
+        '04d': require('../../assets/04n.png'),
+        '10d': require('../../assets/10d.png'),
     }
 
     const todayDate = new Date();
@@ -104,12 +106,12 @@ function WeatherPage(){
 
                 <View style= {{flex: 1, opacity: 0.9, alignItems: 'center', justifyContent: 'center'}} >
                     {/* This is for extra info */}
-                    <View style = { {flex: 1, backgroundColor: 'white', justifyContent: 'space-around',
+                    <View style = { {flex: 1, backgroundColor: 'darkgray', justifyContent: 'space-around',
                         borderRadius: 50, marginHorizontal:20, marginBottom: 10
                     } }> 
                     { weather?.data?.main?.temp ? (
                             <View style = {{flex: 1, flexDirection: 'row', width: '90%', padding: 10} }>
-                                <View style = {{backgroundColor: 'yellow'}}>
+                                <View style = {{}}>
                                     <Image source={require('../../assets/icons8-humidity-30.png')} 
 
                                     ></Image>  
@@ -148,7 +150,7 @@ function WeatherPage(){
                 </View>
 
 
-                <View style= {{flex: 1, backgroundColor: 'green', opacity: 0.1}} >
+                <View style= {{flex: 1, /*backgroundColor: 'green',*/ opacity: 0.1}} >
                     {/* This is for a graph of tempeture*/}
                 </View>
             </View>
