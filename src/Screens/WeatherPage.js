@@ -4,14 +4,17 @@ import { View, Text, Alert, Image, TouchableOpacity } from "react-native"
 import FutureForecast from "../components/FutureForecast";
 
 import LinearGradient from "react-native-linear-gradient";
-import {WeatherService} from "../services/WeatherService"
+import {WeatherService, FutureWeatherService} from "../services/WeatherService"
 import {KelvinToFahrenheit} from "../utils/ConversionTempeture"
+import {MultiDayWeather, NextTempetures} from '../utils/SingleDaysWeather'
+import WeatherGraph from '../components/WeatherGraph';
 
 
 function WeatherPage(){
 
     const [weather, setWeather] = useState(null);
     const [city, setCity] = useState('Atlanta');
+    const [puntos, setPuntos] = useState([]);
 
      useEffect(() => {
         loadWeather(); 
@@ -19,7 +22,15 @@ function WeatherPage(){
 
     const loadWeather = async () =>{
         let weather = await WeatherService(city);
+        let respondido = await FutureWeatherService(city);
+
+        if(respondido.success){
+            const reportado = NextTempetures({ data: respondido.data });
+            setPuntos(reportado);
+        }
+
         console.log(weather.data.weather[0].icon);
+        //console.log(weather.data);
          weather.success ? setWeather(weather) : console.log('An error occured!');
         };
     
@@ -30,7 +41,11 @@ function WeatherPage(){
     ];
     const weatherIcons = {
         '01d': require('../../assets/01d.png'),
+        '01n': require('../../assets/01n.png'),
         '02d': require('../../assets/02d.png'),
+        '02n': require('../../assets/02d.png'),
+        '03d': require('../../assets/03d.png'),
+        '03n': require('../../assets/03d.png'),
         '04n': require('../../assets/04n.png'),
         '04d': require('../../assets/04n.png'),
         '10d': require('../../assets/10d.png'),
@@ -48,7 +63,7 @@ function WeatherPage(){
                     >
 
 
-            <View style= {{flex: 8, backgroundColor: 'white', opacity: 0.8, borderBottomLeftRadius: 25, borderBottomRightRadius: 25}} >
+            <View style= {{flex: 8, backgroundColor: 'darkgray', opacity: 0.8, borderBottomLeftRadius: 25, borderBottomRightRadius: 25}} >
                 <View style= {{flex: 1, opacity: 0.8, alignItems: 'center', paddingTop: 20 }} >
                     {/* This is for the location, and date */}
                     <View style = {{ flexDirection: 'row', alignContent: 'space-between', flex: 1}}>
@@ -80,21 +95,21 @@ function WeatherPage(){
                 </View>
 
 
-                <View style= {{flex: 2, alignItems: 'center', justifyContent: 'center'}} >
+                <View style= {{flex: 2, alignItems: 'center', justifyContent: 'center', }} >
                     {/* This is for the tempature and logo */}
                     { weather?.data?.main?.temp ? (
-                    <View style ={{transform: [{translateY: -40} ] }} >
-                        <Text style = {{color: 'midnightblue', fontSize: 100, fontWeight: '900' }}>
+                    <View style ={{transform: [{translateY: -30} ] }} >
+                        <Text style = {{color: 'midnightblue', fontSize: 130, fontWeight: '900', marginTop: 20 }}>
                             {KelvinToFahrenheit(weather.data.main.temp)}°
                         </Text> 
                         
-                        <View style ={{flexDirection: 'row'}} > 
+                        <View style ={{flexDirection: 'row', transform: [{translateY: -30}]}} > 
 
-                                <Text style = {{color: 'midnightblue', fontSize: 20, fontWeight: '900'}}>
+                                <Text style = {{color: 'midnightblue', fontSize: 30, fontWeight: '900', transform: [{translateX: -15}]}}>
                                   {weather.data.weather[0].main}
                                  </Text>
 
-                                <Image style = {{position: 'absolute', transform: [{translateX: 45}, {translateY: -85}]}}
+                                <Image style = {{position: 'absolute', transform: [{translateX: 70}, {translateY: -75}]}}
                                      source={ weatherIcons[weather.data.weather[0].icon]}/>
 
                         </View>
@@ -105,9 +120,9 @@ function WeatherPage(){
                 </View>
 
 
-                <View style= {{flex: 1, opacity: 0.9, alignItems: 'center', justifyContent: 'center'}} >
+                <View style= {{flex: 1, opacity: 0.9, alignItems: 'center', justifyContent: 'center', }} >
                     {/* This is for extra info */}
-                    <View style = { {flex: 1, backgroundColor: 'lightcyan', justifyContent: 'space-around',
+                    <View style = { {flex: 1, backgroundColor: 'white', justifyContent: 'space-around',
                         borderRadius: 50, marginBottom: 10, width: '90%'
                     } }> 
                     { weather?.data?.main?.temp ? (
@@ -151,8 +166,10 @@ function WeatherPage(){
                 </View>
 
 
-                <View style= {{flex: 1, /*backgroundColor: 'green',*/ opacity: 0.1}} >
-                    {/* This is for a graph of tempeture*/}
+                <View style= {{flex: 2, /*backgroundColor: 'green',*/ }} >
+                    <WeatherGraph 
+                        points = {puntos} 
+                    />
                 </View>
             </View>
 
