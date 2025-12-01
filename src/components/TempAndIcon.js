@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useContext} from "react";
 import {View, Text, Image} from 'react-native'
 import { KelvinToFahrenheit } from "../utils/ConversionTempeture";
+import { WeatherComponentContext } from "../utils/WeatherComponentContext";
 
-function TempAndIcon({weather}){
+function TempAndIcon(){
 
         const weatherIcons = {
         '01d': require('../../assets/01d.png'),
@@ -15,9 +16,10 @@ function TempAndIcon({weather}){
         '04d': require('../../assets/04n.png'),
         '10d': require('../../assets/10d.png'),
     }
+        const {weather} = useContext(WeatherComponentContext);
 
     return(
-        <View style= {{flex: 2, alignItems: 'center', justifyContent: 'center', }} >
+        <View >
                     {
                     // This is for the tempature and logo 
                     }

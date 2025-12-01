@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {View, Text, TouchableOpacity, FlatList, Alert, Image} from 'react-native';
 import {FutureWeatherService} from '../services/WeatherService';
-import {MultiDayWeather, NextTempetures} from '../utils/SingleDaysWeather'
-import WeatherGraph from './WeatherGraph';
+import {MultiDayWeather} from '../utils/SingleDaysWeather'
+import { WeatherComponentContext } from "../utils/WeatherComponentContext";
 
 
 
-function FutureForecast({city /*This is in curly brackets since props takes an object*/ }){ 
+function FutureForecast(){ 
 
     const [weather, setWeather] = useState(null);
     const [days, setDays] = useState([]); 
 
+    const {city} = useContext(WeatherComponentContext);
 
     useEffect(() => {
         loadWeather(); 

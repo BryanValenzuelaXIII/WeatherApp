@@ -1,7 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import {View, Text, Image} from 'react-native';
+import { WeatherComponentContext } from "../utils/WeatherComponentContext";
 
-function PillInfo({weather}){
+function PillInfo(){
+
+    const {weather} = useContext(WeatherComponentContext);
 
     return(
         <View

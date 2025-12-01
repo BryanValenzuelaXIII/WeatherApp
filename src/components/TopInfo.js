@@ -1,7 +1,9 @@
 import React from "react";
 import {View, Text, Image, TouchableOpacity} from "react-native";
+import { useContext } from "react";
+import { WeatherComponentContext } from "../utils/WeatherComponentContext";
 
-function TopInfo({city}){
+function TopInfo(){
 
     const weekDay = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     const months = [
@@ -10,6 +12,8 @@ function TopInfo({city}){
     ];
 
     const todayDate = new Date();
+
+    const {city} = useContext(WeatherComponentContext);
 
     return(
         <View style= {{flex: 1, opacity: 0.8, alignItems: 'center', paddingTop: 20 }} >

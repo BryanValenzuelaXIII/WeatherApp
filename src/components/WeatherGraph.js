@@ -1,14 +1,16 @@
-import React from "react";
+import React, {useContext} from "react";
 import { View } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
+import { WeatherComponentContext } from "../utils/WeatherComponentContext";
 
-function WeatherGraph({points}){
+function WeatherGraph(){
 
+    const {puntos} = useContext(WeatherComponentContext);
 
     return(
         <View >
             <LineChart 
-                data={points}
+                data={puntos}
                 height={145}
                 yAxisOffset={20}
                 yAxisMinValue={20}
