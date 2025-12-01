@@ -1,4 +1,4 @@
-import  React, { useEffect, useState} from "react"
+import  React, { useCallback, useEffect, useState} from "react"
 import { View, StyleSheet } from "react-native"
 import LinearGradient from "react-native-linear-gradient";
 
@@ -20,9 +20,9 @@ function WeatherPage(){
 
      useEffect(() => {
         loadWeather(); 
-    }, []);
+    }, [loadWeather]);
 
-    const loadWeather = async () =>{
+    const loadWeather = useCallback( async () =>{
         let weather = await WeatherService(city);
         let respondido = await FutureWeatherService(city);
 
@@ -34,7 +34,7 @@ function WeatherPage(){
         console.log(weather.data.weather[0].icon);
         //console.log(weather.data);
          weather.success ? setWeather(weather) : console.log('An error occured!');
-        };
+        }, [city])
 
     return(
         <WeatherComponentContext.Provider value={{city, weather,puntos}} >
@@ -64,9 +64,7 @@ function WeatherPage(){
                 </View>
 
                 <View style= {styles.future} >
-                        <FutureForecast 
-                            city={city}
-                        /> 
+                        <FutureForecast /> 
                 </View>
 
             </LinearGradient>

@@ -1,13 +1,55 @@
-import React from "react";
-import { View, Text, Image, Dimensions, TouchableOpacity } from "react-native";
+import React, {useEffect} from "react";
+import { View, Text, Image, PermissionsAndroid, TouchableOpacity, Platform } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import GetLocation from 'react-native-get-location'
 
 
 function WelcomePage(){
 
     //const horizontalScreen = Dimensions.get.
     const navigation = useNavigation();
+    
+     useEffect(() => {
+    const requestLocation = async () => {
+      try {
+        // Request Android runtime permission
+        if (Platform.OS === "android") {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+              title: "Location Permission",
+              message: "This app needs access to your location to show accurate weather.",
+              buttonNeutral: "Ask Me Later",
+              buttonNegative: "Cancel",
+              buttonPositive: "OK",
+            }
+          );
+
+          if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("Location permission denied on Android");
+            return;
+          }
+        }
+
+        // Get current location for both Android and iOS
+        const location = await GetLocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 60000,
+        });
+
+        console.log("User location:", location);
+        // Optionally, save location in state or Context
+
+      } catch (error) {
+        console.warn("Location error:", error);
+      }
+    };
+
+    requestLocation();
+  }, []);
+
+        
 
     return(
         
