@@ -1,13 +1,15 @@
 import  React, { useEffect, useState} from "react"
-import { View, Text, Alert, Image, TouchableOpacity } from "react-native"
+import { View, Text, Alert, Image, TouchableOpacity, StyleSheet } from "react-native"
+import LinearGradient from "react-native-linear-gradient";
 
 import FutureForecast from "../components/FutureForecast";
-
-import LinearGradient from "react-native-linear-gradient";
+import WeatherGraph from '../components/WeatherGraph';
+import TopInfo from '../components/TopInfo'
+import TempAndIcon from '../components/TempAndIcon'
+import PillInfo from '../components/PillInfo'
 import {WeatherService, FutureWeatherService} from "../services/WeatherService"
 import {KelvinToFahrenheit} from "../utils/ConversionTempeture"
 import {MultiDayWeather, NextTempetures} from '../utils/SingleDaysWeather'
-import WeatherGraph from '../components/WeatherGraph';
 
 
 function WeatherPage(){
@@ -63,117 +65,28 @@ function WeatherPage(){
                     >
 
 
-            <View style= {{flex: 8, backgroundColor: 'darkgray', opacity: 0.8, borderBottomLeftRadius: 25, borderBottomRightRadius: 25}} >
-                <View style= {{flex: 1, opacity: 0.8, alignItems: 'center', paddingTop: 20 }} >
-                    {/* This is for the location, and date */}
-                    <View style = {{ flexDirection: 'row', alignContent: 'space-between', flex: 1}}>
-                       { <View style = {{ flex: 1}} >
-                            {/* <Text>
-                                a
-                            </Text> */}
-                        </View>  }
-                        <View style = {{ flexDirection: 'row', alignItems: 'flex-end', flex: 1}} >
-                             <Image source={require('../../assets/location1.png')} />                    
-                            <Text style = {{fontSize: 25, fontWeight: 700}}>
-                                {city || "Location"}
-                             </Text>
-                        </View>
-                        
-                        <View style = {{flexDirection: 'row-reverse',alignItems:'flex-end', flex: 1, paddingRight: 20}}>
-                            { <TouchableOpacity >
-                                <Image source={require('../../assets/icons8-search-30.png')}/>
-                            </TouchableOpacity>}
-                        </View>
-                            
-                    </View>
-
-
-                    <Text style = {{fontSize: 15, fontWeight: 500, opacity: 0.7, marginBottom: 20, paddingTop: 10 }}>
-                        {weekDay[todayDate.getDay()]} {months[todayDate.getMonth()]} {todayDate.getFullYear()}
-                    </Text>
-
+            <View style= {styles.principal} >
+                
+                <TopInfo 
+                    city = {city}
+                />
+                <View style= {styles.temp} >
+                    <TempAndIcon 
+                        weather={weather}
+                    />
+                </View>
+                <View style={styles.pill}>
+                    <PillInfo weather={weather} />
                 </View>
 
-
-                <View style= {{flex: 2, alignItems: 'center', justifyContent: 'center', }} >
-                    {/* This is for the tempature and logo */}
-                    { weather?.data?.main?.temp ? (
-                    <View style ={{transform: [{translateY: -30} ] }} >
-                        <Text style = {{color: 'midnightblue', fontSize: 130, fontWeight: '900', marginTop: 20 }}>
-                            {KelvinToFahrenheit(weather.data.main.temp)}°
-                        </Text> 
-                        
-                        <View style ={{flexDirection: 'row', transform: [{translateY: -30}]}} > 
-
-                                <Text style = {{color: 'midnightblue', fontSize: 30, fontWeight: '900', transform: [{translateX: -15}]}}>
-                                  {weather.data.weather[0].main}
-                                 </Text>
-
-                                <Image style = {{position: 'absolute', transform: [{translateX: 70}, {translateY: -75}]}}
-                                     source={ weatherIcons[weather.data.weather[0].icon]}/>
-
-                        </View>
-                    </View> ) : (
-                        <Text style = {{color: 'midnightblue', fontSize: 20, fontWeight: '900'}}>
-                            Tempeture = - -
-                        </Text> )}
-                </View>
-
-
-                <View style= {{flex: 1, opacity: 0.9, alignItems: 'center', justifyContent: 'center', }} >
-                    {/* This is for extra info */}
-                    <View style = { {flex: 1, backgroundColor: 'white', justifyContent: 'space-around',
-                        borderRadius: 50, marginBottom: 10, width: '90%'
-                    } }> 
-                    { weather?.data?.main?.temp ? (
-                            <View style = {{flex: 1, flexDirection: 'row',  justifyContent: 'space-around', marginTop: 10} }>
-                                <View style = {{alignItems: 'center'}}>
-                                    <Image source={require('../../assets/icons8-humidity-30.png')} 
-
-                                    ></Image>  
-                                    <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
-                                        Humidity {"\n" + weather.data.main.humidity}
-                                    </Text>
-                                </View>
-
-                                <View style = {{alignItems: 'center'}}>
-                                    <Image source={require('../../assets/icons8-wind-30.png')} 
-
-                                    ></Image>  
-                                    <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
-                                        Wind {"\n" + weather.data.wind.speed} Km/hr
-                                    </Text>
-                                </View >
-
-
-                                <View style = {{alignItems: 'center'}}>
-                                    <Image source={require('../../assets/icons8-visibility-30.png')} 
-
-                                    ></Image>  
-
-                                    <Text style={{ textAlign: 'center', fontSize: 18, flex: 1 }}>
-                                        Visibility {"\n" + (weather.data.visibility/100) + "%"}
-                                    </Text>
-
-                                </View>
-                            </View>) :(
-                        <Text>
-                            No information 
-                        </Text>
-                        )
-                    }
-                    </View>
-                </View>
-
-
-                <View style= {{flex: 2, /*backgroundColor: 'green',*/ }} >
+                <View style= {styles.graph} >
                     <WeatherGraph 
                         points = {puntos} 
                     />
                 </View>
             </View>
 
-            <View style= {{flex: 3}} >
+            <View style= {styles.future} >
                     <FutureForecast 
                         city={city}
                     /> 
@@ -182,5 +95,35 @@ function WeatherPage(){
         </LinearGradient>
     )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  principal: {
+    flex: 8,
+    backgroundColor: 'darkgray',
+    opacity: 0.8,
+    borderBottomLeftRadius: 25, 
+    borderBottomRightRadius: 25
+  },
+  temp: {
+    flex: 2, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+  pill:{ 
+    flex: 1, 
+    opacity: 0.9, 
+    alignItems: "center", 
+    justifyContent: "center", 
+  },
+  graph:{
+    flex: 2
+  },
+  future:{
+    flex: 3
+  }
+});
 
 export default WeatherPage
