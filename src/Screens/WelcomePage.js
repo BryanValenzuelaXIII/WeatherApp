@@ -10,7 +10,7 @@ function WelcomePage(){
     //const horizontalScreen = Dimensions.get.
     const navigation = useNavigation();
     
-     useEffect(() => {
+     /*useEffect(() => {
     const requestLocation = async () => {
       try {
         // Request Android runtime permission
@@ -48,7 +48,7 @@ function WelcomePage(){
 
     requestLocation();
   }, []);
-
+*/
         
 
     return(
@@ -100,6 +100,14 @@ function WelcomePage(){
                             </Text>
                         </View>
                     </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('Login')}
+                        >
+                          <Text>
+                          Login
+                          </Text>
+                      </TouchableOpacity>
 
                 </View> 
             </LinearGradient>
